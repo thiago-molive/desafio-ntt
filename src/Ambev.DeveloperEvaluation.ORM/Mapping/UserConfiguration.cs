@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.ValueObjets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Text.RegularExpressions;
 
 namespace Ambev.DeveloperEvaluation.ORM.Mapping;
 
@@ -19,6 +19,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Email).IsRequired().HasMaxLength(100);
         builder.Property(u => u.Phone).HasMaxLength(20);
 
+        builder.Property(user => user.FirstName)
+            .HasMaxLength(200)
+            .HasConversion(firstName => firstName.Value, value => new FirstName(value));
+
+        builder.Property(user => user.LastName)
+            .HasMaxLength(200)
+            .HasConversion(firstName => firstName.Value, value => new LastName(value));
+
         builder.Property(u => u.Status)
             .HasConversion<string>()
             .HasMaxLength(20);
@@ -27,5 +35,24 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion<string>()
             .HasMaxLength(20);
 
+        builder.OwnsOne(u => u.Address, address =>
+        {
+            address.Property(a => a.City).HasMaxLength(100);
+            address.Property(a => a.Street).HasMaxLength(200);
+            address.Property(a => a.Number).HasMaxLength(10);
+            address.Property(a => a.Zipcode).HasMaxLength(20);
+            address.OwnsOne(a => a.Geolocation, geo =>
+            {
+                geo.Property(g => g.Lat).HasMaxLength(20);
+                geo.Property(g => g.Long).HasMaxLength(20);
+            });
+        });
+
+        builder.Property(u => u.CreatedAt)
+            .IsRequired()
+            .HasDefaultValueSql("now()");
+
+        builder.Property(u => u.UpdatedAt)
+            .IsRequired(false);
     }
 }

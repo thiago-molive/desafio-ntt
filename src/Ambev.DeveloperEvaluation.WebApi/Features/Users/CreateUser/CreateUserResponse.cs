@@ -15,7 +15,7 @@ public class CreateUserResponse
     /// <summary>
     /// The user's full name
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public CreateUserName Name { get; set; }
 
     /// <summary>
     /// The user's email address
@@ -28,12 +28,39 @@ public class CreateUserResponse
     public string Phone { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets the address of the newly created user.
+    /// </summary>
+    /// <value>An object representing the address of the created user.</value>
+    public CreateUserAddress Address { get; set; }
+
+    /// <summary>
     /// The user's role in the system
     /// </summary>
-    public UserRole Role { get; set; }
+    public string Role { get; set; }
 
     /// <summary>
     /// The current status of the user
     /// </summary>
-    public UserStatus Status { get; set; }
+    public string Status { get; set; }
+}
+
+public class CreateUserName
+{
+    public string Firstname { get; set; }
+    public string Lastname { get; set; }
+}
+
+public class CreateUserAddress
+{
+    public string City { get; set; }
+    public string Street { get; set; }
+    public int Number { get; set; }
+    public string Zipcode { get; set; }
+    public CreateUserGeolocation Geolocation { get; set; }
+}
+
+public class CreateUserGeolocation
+{
+    public string Lat { get; set; }
+    public string Long { get; set; }
 }

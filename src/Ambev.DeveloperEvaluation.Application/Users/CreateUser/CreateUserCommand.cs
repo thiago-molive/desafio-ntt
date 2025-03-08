@@ -26,6 +26,11 @@ public class CreateUserCommand : IRequest<CreateUserResult>
     public string Username { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets the user's full name.
+    /// </summary>
+    public UserFullNameCommandItem Name { get; set; }
+
+    /// <summary>
     /// Gets or sets the password for the user.
     /// </summary>
     public string Password { get; set; } = string.Empty;
@@ -39,6 +44,11 @@ public class CreateUserCommand : IRequest<CreateUserResult>
     /// Gets or sets the email address for the user.
     /// </summary>
     public string Email { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the user's address.
+    /// </summary>
+    public UserAddressCommandItem Address { get; set; }
 
     /// <summary>
     /// Gets or sets the status of the user.
@@ -61,4 +71,25 @@ public class CreateUserCommand : IRequest<CreateUserResult>
             Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
         };
     }
+}
+
+public sealed class UserFullNameCommandItem
+{
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+}
+
+public sealed class UserAddressCommandItem
+{
+    public string Street { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public int Number { get; set; } = 0;
+    public string ZipCode { get; set; } = string.Empty;
+    public UserGeolocationCommandItem Geolocation { get; set; }
+}
+
+public sealed class UserGeolocationCommandItem
+{
+    public string Lat { get; set; } = string.Empty;
+    public string Long { get; set; } = string.Empty;
 }
